@@ -1,3 +1,4 @@
+# claude-3.7-sonnet
 # Proyecto: DevCompass
 
 ## Índice
@@ -34,6 +35,40 @@ Work in Progress
 
 ## 1. Descripción general del producto
 
+### **1.1. Objetivo:**
+
+DevCompass tiene como objetivo principal facilitar el desarrollo profesional de especialistas en tecnología, alineando sus competencias técnicas y objetivos de carrera con la cultura y valores de su organización.
+
+El producto aporta valor a dos grupos principales:
+
+**Para desarrolladores:** Proporciona un camino claro de progresión profesional personalizado que refleja no solo las competencias técnicas necesarias, sino también los comportamientos y valores que su empresa específica valora, aumentando así sus posibilidades de crecimiento y satisfacción profesional.
+
+**Para organizaciones:** Ofrece una herramienta para asegurar que el desarrollo de su talento técnico está alineado con su cultura organizacional única, facilitando la retención, el engagement y la coherencia cultural a través de los diferentes niveles de la jerarquía técnica.
+
+El producto soluciona la desconexión habitual entre el desarrollo técnico y la cultura organizacional, que suele resultar en planes de carrera genéricos que no reflejan los valores específicos de cada empresa.
+
+### **1.2. Características y funcionalidades principales:**
+
+1. **Análisis cultural mediante NLP:** Utiliza procesamiento de lenguaje natural para analizar documentos de cultura organizacional y extraer automáticamente valores corporativos, comportamientos esperados y expectativas por nivel jerárquico.
+
+2. **Autodiagnóstico técnico contextualizado:** Sistema de evaluación para desarrolladores que mide tanto competencias técnicas como alineación con comportamientos valorados culturalmente.
+
+3. **Mapa de carrera personalizado:** Visualización del camino de desarrollo desde Junior hasta Tech Leader, adaptado a los valores y expectativas específicas de cada organización.
+
+4. **Motor de alineación cultural-técnica:** Algoritmo que analiza el grado de coincidencia entre el perfil del desarrollador y las expectativas culturales de la organización, identificando brechas y fortalezas.
+
+5. **Plan de desarrollo accionable:** Generación de roadmaps personalizados con objetivos priorizados según la alineación cultural y técnica, incluyendo recomendación de recursos relevantes.
+
+6. **Seguimiento de evolución:** Sistema para registrar evidencias de progreso, actualizar métricas de desarrollo y generar reportes periódicos compartibles con líderes y mentores.
+
+7. **Autenticación con Google:** Integración con Google para un inicio de sesión simplificado y detección automática de dominio corporativo para asociación con perfil cultural.
+
+### **1.3. Diseño y experiencia de usuario:**
+
+Work in Progress
+
+### **1.4. Instrucciones de instalación:**
+
 Work in Progress
 
 ---
@@ -42,7 +77,43 @@ Work in Progress
 
 ### **2.1. Diagrama de arquitectura:**
 
-Para el MVP de DevCompass, se implementará una infraestructura simplificada pero robusta, enfocada en rápido desarrollo y validación:
+DevCompass se construirá como una aplicación web moderna basada en microservicios, con clara separación entre frontend y backend, siguiendo principios de desarrollo ágil y utilizando tecnologías cloud-native.
+
+```mermaid
+flowchart TD
+    Client[Cliente Web] --> Gateway[API Gateway]
+    
+    subgraph "Servicios Core"
+        Gateway --> AuthService[Authentication Service]
+        Gateway --> CultureService[Culture Analysis Service]
+        Gateway --> ProfileService[Developer Profile Service]
+        Gateway --> CareerService[Career Map Service]
+        Gateway --> AlignmentService[Alignment Engine]
+        Gateway --> DevPlanService[Development Plan Service]
+    end
+    
+    subgraph "Servicios NLP"
+        CultureService <--> NLPProcessor[NLP Processor]
+        NLPProcessor <--> GPTService[OpenAI GPT Service]
+        NLPProcessor <--> RulesEngine[Rules Engine]
+    end
+    
+    subgraph "Almacenamiento"
+        AuthService --> Redis[(Redis)]
+        AuthService --> PostgreSQL[(PostgreSQL)]
+        
+        CultureService --> MongoDB[(MongoDB)]
+        CultureService --> PostgreSQL
+        
+        ProfileService --> PostgreSQL
+        CareerService --> PostgreSQL
+        AlignmentService --> PostgreSQL
+        AlignmentService --> MongoDB
+        DevPlanService --> PostgreSQL
+    end
+```
+
+Para el MVP, se utilizará una versión simplificada de esta arquitectura:
 
 ```mermaid
 flowchart TD
@@ -66,32 +137,55 @@ flowchart TD
     end
 ```
 
-### **2.2. Stack Tecnológico Simplificado:**
+### **2.2. Descripción de componentes principales:**
 
-1. **Frontend**
-   - React + TypeScript
-   - Material UI
-   - Recharts para visualizaciones
-   - Alojado en Vercel/Netlify/Heroku
+**Frontend:**
+- **Framework**: React con TypeScript
+- **Estado**: Redux Toolkit o Context API
+- **UI**: Material UI para componentes base
+- **Visualización**: D3.js/Recharts para gráficos
+- **Routing**: React Router
 
-2. **Backend**
-   - Node.js + Express.js
-   - Passport.js para autenticación
-   - Knex.js/Sequelize como ORM
-   - Alojado en Heroku/Railway/Render
+**Backend:**
+- **Framework**: Node.js con Express.js
+- **Autenticación**: Integración con Google OAuth
+- **Microservicios**: Servicios independientes por dominio funcional
+- **Message Queue**: Para comunicación asíncrona entre servicios
+- **NLP**: Servicio especializado para procesamiento de lenguaje natural
 
-3. **Base de Datos**
-   - PostgreSQL único
-   - Migraciones con Knex/Sequelize
-   - Alojado en servicio gestionado (Heroku Postgres)
+**Datos:**
+- **PostgreSQL**: Para datos relacionales y transaccionales
+- **MongoDB**: Para documentos semiestructurados (perfiles culturales, evidencias)
+- **Redis**: Caché, sesiones y datos de alta frecuencia de acceso
 
-4. **Servicios Externos**
-   - OpenAI API para procesamiento NLP
-   - Google OAuth para autenticación
-   - Almacenamiento S3 para documentos (opcional)
+**DevOps:**
+- **Contenedores**: Docker
+- **Orquestación**: Kubernetes
+- **CI/CD**: Pipeline automatizado
+- **Monitoreo**: Prometheus + Grafana
 
-### **2.3. Configuración de Desarrollo Local:**
+**Componentes Principales del Servicio NLP:**
+1. **Preprocessor**: Limpieza y preparación de documentos en diversos formatos
+2. **OpenAI GPT Client**: Comunicación optimizada con la API de OpenAI
+3. **Result Parser**: Validación y normalización de respuestas JSON
+4. **Rules Engine**: Procesamiento post-NLP y aplicación de reglas de negocio 
+5. **Validation Service**: Interfaz para revisión y ajuste humano de resultados
 
+### **2.3. Descripción de alto nivel del proyecto y estructura de ficheros**
+
+Work in Progress
+
+### **2.4. Infraestructura y despliegue**
+
+Para el MVP, se utilizará una infraestructura simplificada enfocada en rápido desarrollo y validación:
+
+**Entorno de desarrollo:**
+- Docker Compose con contenedores para:
+  - PostgreSQL (única base de datos para MVP)
+  - Backend Express.js
+  - Frontend React
+
+**Configuración local con Docker:**
 ```yaml
 # docker-compose.yml para entorno de desarrollo local
 version: '3'
@@ -144,16 +238,37 @@ volumes:
   postgres_data:
 ```
 
-### **2.4. Descripción de alto nivel del proyecto y estructura de ficheros**
+**Entorno de producción (MVP):**
+- Frontend: Vercel/Netlify/Heroku
+- Backend: Heroku/Railway/Render
+- Base de datos: Servicio gestionado (Heroku Postgres)
 
-Work in Progress
+**Stack tecnológico simplificado para MVP:**
+1. **Frontend**: React + TypeScript, Material UI, Recharts
+2. **Backend**: Node.js + Express.js, Passport.js, Knex.js/Sequelize
+3. **Base de datos**: PostgreSQL único
+4. **Servicios externos**: OpenAI API, Google OAuth
 
-### **2.5. Seguridad e Integración con Google**
+### **2.5. Seguridad**
 
-La seguridad es prioritaria incluso en el MVP, especialmente para la protección de datos culturales y personales.
+El sistema implementará las siguientes medidas de seguridad para el MVP:
 
-#### Flujo de Autenticación OAuth
+1. **Autenticación**:
+   - OAuth 2.0 con Google
+   - JWT para gestión de sesiones
+   - Middleware de autorización por rol
 
+2. **Protección de datos**:
+   - Cifrado en tránsito (HTTPS)
+   - Validación de entradas
+   - Sanitización de datos
+
+3. **Seguridad básica**:
+   - Headers de seguridad (Helmet)
+   - CORS configurado
+   - Manejo seguro de errores
+
+**Flujo de autenticación OAuth:**
 ```mermaid
 sequenceDiagram
     actor User
@@ -178,105 +293,6 @@ sequenceDiagram
     App->>API: Solicitudes autenticadas
 ```
 
-#### Implementación OAuth con Google (Simplificada)
-
-```javascript
-// Configuración del servidor de autenticación
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const Organization = require('../models/Organization');
-
-// Configuración de Google OAuth
-passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: '/api/auth/google/callback',
-    scope: ['profile', 'email']
-  },
-  async (accessToken, refreshToken, profile, done) => {
-    try {
-      // Verificar si el usuario existe
-      let user = await User.findOne({ googleId: profile.id });
-      
-      if (!user) {
-        // Crear usuario nuevo
-        const email = profile.emails[0].value;
-        const domain = email.split('@')[1];
-        
-        // Buscar organización por dominio
-        const organization = await Organization.findOne({ domain });
-        
-        // Determinar si es primer usuario de organización (admin)
-        const isAdmin = organization ? 
-          (await User.countDocuments({ organizationId: organization.id })) === 0 : 
-          false;
-        
-        user = await User.create({
-          googleId: profile.id,
-          email,
-          name: profile.displayName,
-          profilePicture: profile.photos[0].value,
-          organizationId: organization?.id,
-          roleId: isAdmin ? 'admin' : 'developer'
-        });
-      }
-      
-      // Generar token JWT
-      const token = jwt.sign(
-        { id: user.id, email: user.email, role: user.roleId },
-        process.env.JWT_SECRET,
-        { expiresIn: '1h' }
-      );
-      
-      return done(null, { user, token });
-    } catch (error) {
-      return done(error);
-    }
-  }
-));
-
-// Middleware de autenticación JWT
-const authenticateJwt = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  
-  if (authHeader) {
-    const token = authHeader.split(' ')[1];
-    
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-      if (err) {
-        return res.sendStatus(403);
-      }
-      
-      req.user = user;
-      next();
-    });
-  } else {
-    res.sendStatus(401);
-  }
-};
-
-module.exports = { passport, authenticateJwt };
-```
-
-#### Medidas de Seguridad para MVP
-
-1. **Autenticación**
-   - OAuth 2.0 con Google
-   - JWT para sesiones
-   - Middleware de autorización por rol
-
-2. **Protección de Datos**
-   - Cifrado en tránsito (HTTPS)
-   - Validación de entradas
-   - Sanitización de datos
-
-3. **Seguridad Básica**
-   - Headers de seguridad (Helmet)
-   - CORS configurado
-   - Manejo seguro de errores
-
 ### **2.6. Tests**
 
 Work in Progress
@@ -285,7 +301,98 @@ Work in Progress
 
 ## 3. Modelo de Datos
 
-Work in Progress
+### **3.1. Diagrama del modelo de datos:**
+
+```mermaid
+erDiagram
+    Organization ||--o{ User : "has"
+    Organization ||--|| CultureProfile : "has"
+    User ||--o| DeveloperProfile : "has"
+    User }|--|| Role : "has"
+    CultureProfile ||--o{ CultureValue : "contains"
+    CultureProfile ||--o{ ExpectedBehavior : "defines"
+    CareerPath ||--o{ CareerLevel : "contains"
+    CareerLevel ||--o{ RequiredSkill : "requires"
+    DeveloperProfile ||--o{ SkillAssessment : "contains"
+    DeveloperProfile ||--|| CareerPosition : "has"
+    CareerPosition }|--|| CareerLevel : "references"
+    DeveloperProfile ||--o{ DevelopmentGoal : "has"
+    DevelopmentGoal ||--o{ LearningResource : "uses"
+    DevelopmentGoal ||--o{ ProgressEvidence : "tracks"
+    RequiredSkill }o--|| Skill : "references"
+    SkillAssessment }o--|| Skill : "references"
+    ExpectedBehavior }o--|| CareerLevel : "applies_to"
+```
+
+### **3.2. Descripción de entidades principales:**
+
+#### Organization
+```json
+{
+  "id": "string (UUID)",
+  "name": "string",
+  "domain": "string (dominio de correo)",
+  "created_at": "timestamp",
+  "active": "boolean"
+}
+```
+
+#### CultureProfile
+```json
+{
+  "id": "string (UUID)",
+  "organization_id": "string (UUID, FK)",
+  "raw_documents": "jsonb (documentos originales)",
+  "last_processed": "timestamp",
+  "processing_confidence": "float",
+  "created_at": "timestamp",
+  "updated_at": "timestamp"
+}
+```
+
+#### User
+```json
+{
+  "id": "string (UUID)",
+  "email": "string",
+  "name": "string",
+  "google_id": "string",
+  "profile_picture": "string (URL)",
+  "last_login": "timestamp",
+  "organization_id": "string (UUID, FK)",
+  "role_id": "string (UUID, FK)"
+}
+```
+
+#### DeveloperProfile
+```json
+{
+  "id": "string (UUID)",
+  "user_id": "string (UUID, FK)",
+  "last_assessment": "timestamp",
+  "career_goals": "json",
+  "created_at": "timestamp",
+  "updated_at": "timestamp"
+}
+```
+
+#### CareerLevel
+```json
+{
+  "id": "string (UUID)",
+  "career_path_id": "string (UUID, FK)",
+  "name": "string (ej: Junior, Mid, Senior)",
+  "description": "string",
+  "level_order": "integer",
+  "progression_criteria": "json"
+}
+```
+
+### **3.3. Estrategia de Persistencia**
+
+- **PostgreSQL**: Almacenamiento principal para datos relacionales y transaccionales
+- **MongoDB**: Para documentos semiestructurados (perfiles culturales, evidencias)
+- **Redis**: Caché, sesiones y datos de alta frecuencia de acceso
 
 ---
 
@@ -336,7 +443,7 @@ flowchart TD
 - `GET /api/development-plans/:userId`: Obtiene plan actual
 - `POST /api/development-plans/:userId/generate`: Genera plan
 
-### **4.3. Implementación API Simple**
+### **4.3. Implementación API Simple (Ejemplo)**
 
 ```javascript
 // app.js - Aplicación Express simplificada para MVP
@@ -385,258 +492,347 @@ app.use((err, req, res, next) => {
   });
 });
 
+module.exports = app;);
+app.use('/api/culture', cultureRoutes);
+app.use('/api/profiles', profileRoutes);
+app.use('/api/career', careerRoutes);
+app.use('/api/alignment', alignmentRoutes);
+app.use('/api/development-plans', planRoutes);
+
+// Middleware para errores
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    error: true,
+    message: process.env.NODE_ENV === 'production' 
+      ? 'Error interno del servidor' 
+      : err.message
+  });
+});
+
 module.exports = app;
+```
+
+### **4.4. Ejemplos de Prompts GPT para API NLP**
+
+#### Prompt para Extracción de Valores
+
+```
+Analiza el siguiente texto de cultura organizacional y extrae los 5-10 valores fundamentales de la empresa. Para cada valor, proporciona:
+1. Nombre del valor (una palabra o frase corta)
+2. Descripción breve que contextualiza el valor
+3. Nivel de importancia percibida (del 1-10)
+4. Términos o conceptos relacionados
+
+Responde ÚNICAMENTE en formato JSON estructurado siguiendo exactamente este esquema:
+{
+  "valores": [
+    {
+      "nombre": "nombre del valor",
+      "descripcion": "descripción breve",
+      "importancia": número del 1-10,
+      "terminosRelacionados": ["término1", "término2"]
+    }
+  ]
+}
+
+Texto a analizar:
+[TEXTO CULTURAL DE LA EMPRESA]
+```
+
+#### Prompt para Comportamientos Esperados
+
+```
+Analiza el siguiente texto de cultura organizacional y extrae los comportamientos específicos que la empresa espera de sus empleados. Para cada comportamiento:
+1. Descripción clara del comportamiento
+2. Valores asociados a este comportamiento
+3. Niveles jerárquicos a los que aplica (Junior, Mid, Senior, Lead)
+
+Responde ÚNICAMENTE en formato JSON estructurado siguiendo exactamente este esquema:
+{
+  "comportamientos": [
+    {
+      "descripcion": "descripción del comportamiento",
+      "valoresAsociados": ["valor1", "valor2"],
+      "nivelesAplicables": ["Junior", "Mid", "Senior", "Lead"]
+    }
+  ]
+}
+
+Texto a analizar:
+[TEXTO CULTURAL DE LA EMPRESA]
+```
+
+### **4.5. Flujo de Procesamiento NLP**
+
+```mermaid
+sequenceDiagram
+    actor Admin as Administrador
+    participant UI as Frontend Admin
+    participant API as API Gateway
+    participant NLP as NLP Service
+    participant GPT as OpenAI GPT
+    participant DB as MongoDB
+    
+    Admin->>UI: Sube documentos culturales
+    UI->>API: POST /api/culture/:orgId/documents
+    API->>NLP: Procesar documentos
+    NLP->>NLP: Preprocesar texto
+    
+    loop Para cada segmento de texto
+        NLP->>GPT: Solicitud con prompt de valores
+        GPT-->>NLP: Respuesta JSON (valores)
+        NLP->>GPT: Solicitud con prompt de comportamientos
+        GPT-->>NLP: Respuesta JSON (comportamientos)
+    end
+    
+    NLP->>NLP: Aplicar reglas de negocio
+    NLP->>NLP: Consolidar resultados
+    NLP->>DB: Almacenar resultados preliminares
+    NLP-->>API: Devolver análisis completado
+    API-->>UI: Mostrar resultados para validación
+    
+    Admin->>UI: Valida y ajusta resultados
+    UI->>API: PUT /api/culture/:orgId
+    API->>NLP: Procesar ajustes
+    NLP->>DB: Actualizar perfil cultural
+    NLP-->>API: Confirmar actualización
+    API-->>UI: Mostrar perfil finalizado
 ```
 
 ---
 
-## 5. Frontend
+## 5. Historias de usuario
 
-### **5.1. Estructura de Componentes**
+A continuación se presentan algunas historias de usuario clave para el MVP:
 
-```mermaid
-flowchart TD
-    App --> Router
-    Router --> AuthPages
-    Router --> AdminPages
-    Router --> DeveloperPages
-    
-    subgraph "Componentes Auth"
-        AuthPages --> Login
-        AuthPages --> GoogleCallback
-    end
-    
-    subgraph "Componentes Admin"
-        AdminPages --> Dashboard
-        AdminPages --> CultureManager
-        AdminPages --> UsersManager
-        AdminPages --> CareerPathEditor
-    end
-    
-    subgraph "Componentes Developer"
-        DeveloperPages --> DevDashboard
-        DeveloperPages --> ProfileView
-        DeveloperPages --> CareerMapView
-        DeveloperPages --> DevelopmentPlanView
-    end
-    
-    subgraph "Componentes Compartidos"
-        SharedComps[Shared Components]
-        SharedComps --> Navbar
-        SharedComps --> FormComponents
-        SharedComps --> DataVisualizers
-    end
-    
-    App --> SharedComps
-    AdminPages --> SharedComps
-    DeveloperPages --> SharedComps
-    AuthPages --> SharedComps
-```
+### Módulo 1: Captura y Análisis Cultural
 
-### **5.2. Principales Vistas MVP**
+**Historia 1: Ingreso de información cultural empresarial**
+**Como** representante de RRHH/Liderazgo
+**Quiero** ingresar información sobre la cultura organizacional
+**Para** crear un perfil cultural que guíe el desarrollo de los profesionales IT
 
-#### Vista de Administrador
+**Criterios de aceptación**:
+- Puedo acceder al módulo de cultura empresarial
+- Puedo completar campos estructurados (valores, misión, visión)
+- Puedo proporcionar texto libre describiendo comportamientos valorados
+- Puedo cargar documentos relevantes (código de conducta, manuales)
+- El sistema confirma la recepción de la información
 
-1. **Dashboard Cultural**
-   - Resumen del perfil cultural
-   - Métricas de alineación global
-   - Estado de usuarios
+**Historia 2: Visualización del ADN cultural**
+**Como** administrador/desarrollador
+**Quiero** visualizar el perfil cultural de la organización
+**Para** comprender los valores y comportamientos esperados
 
-2. **Gestor Cultural**
-   - Subida de documentos
-   - Visualización de valores extraídos
-   - Editor de comportamientos esperados
-   - Validación de perfil cultural
+**Criterios de aceptación**:
+- Puedo acceder al dashboard cultural
+- Puedo ver representación gráfica de valores centrales
+- Puedo explorar comportamientos esperados por nivel
+- Puedo acceder a recomendaciones de alineación cultural
 
-#### Vista de Desarrollador
+### Módulo 2: Evaluación Técnica Contextualizada
 
-1. **Dashboard Personal**
-   - Resumen de perfil y posición
-   - Indicadores de alineación
-   - Próximos objetivos
+**Historia 3: Autodiagnóstico inicial del desarrollador**
+**Como** desarrollador
+**Quiero** realizar una autoevaluación de mis competencias
+**Para** establecer mi perfil técnico actual
 
-2. **Autodiagnóstico**
-   - Evaluación de competencias técnicas
-   - Evaluación de competencias blandas
-   - Visualización de resultados
+**Criterios de aceptación**:
+- Puedo acceder al módulo de autodiagnóstico
+- Puedo completar evaluación técnica basada en mi nivel
+- Puedo evaluar mis habilidades blandas
+- Puedo indicar mis objetivos de carrera
+- Puedo guardar parcialmente y continuar después
+- Recibo un resumen visual de mi perfil al finalizar
 
-3. **Mapa de Carrera y Plan**
-   - Visualización de ruta profesional
-   - Plan de desarrollo personalizado
-   - Recursos recomendados
+**Historia 4: Benchmark contra expectativas organizacionales**
+**Como** desarrollador
+**Quiero** comparar mi perfil con las expectativas para mi nivel
+**Para** identificar brechas de desarrollo
 
-### **5.3. Tecnologías Frontend para MVP**
+**Criterios de aceptación**:
+- El sistema muestra indicadores de alineación por categoría
+- Puedo identificar claramente mis fortalezas
+- Puedo ver las brechas más importantes
+- Recibo un informe personalizado de benchmark
 
-- **Framework**: React con TypeScript
-- **Estado**: Context API o Redux simple
-- **Routing**: React Router
-- **UI**: Material UI para componentes base
-- **Visualización**: Recharts para gráficos
-- **Formularios**: Formik + Yup
-- **HTTP**: Axios o fetch API
+### Módulo 3: Plan de Desarrollo Accionable
+
+**Historia 5: Generación del roadmap personalizado**
+**Como** desarrollador
+**Quiero** recibir un plan de desarrollo personalizado
+**Para** progresar en mi carrera de manera alineada con la cultura
+
+**Criterios de aceptación**:
+- El sistema traduce brechas en objetivos de desarrollo
+- Los objetivos están secuenciados según prioridad
+- Se establecen tiempos estimados para cada objetivo
+- Puedo visualizar el roadmap completo
+
+**Historia 6: Registro de evidencias de desarrollo**
+**Como** desarrollador
+**Quiero** registrar evidencias de mi progreso
+**Para** documentar mi evolución profesional
+
+**Criterios de aceptación**:
+- Puedo seleccionar el objetivo en el que he avanzado
+- Puedo registrar evidencia (descripción, enlaces, adjuntos)
+- Puedo autoevaluar mi nivel de dominio alcanzado
+- El sistema registra la evidencia con timestamp
 
 ---
 
 ## 6. Tickets de trabajo
 
-### **6.1. Backlog de Tickets Simplificado**
+### Épica 1: Configuración de Proyecto e Infraestructura Simplificada
 
-Para el desarrollo del MVP, se ha creado un backlog de tickets enfocado en las funcionalidades esenciales con una infraestructura simplificada:
+#### DCM-001: Configuración del repositorio y estructura de proyecto
+**Tipo**: Tarea Técnica  
+**Prioridad**: Alta  
+**Estimación**: 3 puntos  
+**Descripción**: Crear repositorio en GitHub/GitLab y configurar estructura de carpetas básica para el proyecto.  
+**Criterios de aceptación**:
+- Repositorio creado con estructura de carpetas
+- Configuración de ESLint, Prettier y TypeScript
+- Inicialización de proyecto con React (frontend) y Express (backend)
+- README con instrucciones de instalación y desarrollo
 
-#### Épica 1: Configuración de Proyecto e Infraestructura Simplificada
-- DCM-001: Configuración del repositorio y estructura de proyecto
-- DCM-002: Configuración de entorno de desarrollo simple (Docker)
-- DCM-003: Implementación del modelo de datos inicial
-- DCM-004: Configuración de despliegue simple
+#### DCM-002: Configuración de entorno de desarrollo simple
+**Tipo**: Tarea Técnica  
+**Prioridad**: Alta  
+**Estimación**: 3 puntos  
+**Descripción**: Configurar un entorno de desarrollo simple con Docker para facilitar el desarrollo local.  
+**Criterios de aceptación**:
+- Docker Compose para el entorno de desarrollo
+- Contenedores para base de datos (PostgreSQL)
+- Scripts para iniciar el entorno completo
+- Variables de entorno configuradas para desarrollo
 
-#### Épica 2: Autenticación y Gestión de Usuarios
-- DCM-005: Implementación de autenticación con Google OAuth
-- DCM-006: Implementación de roles de usuario (Admin/Developer)
-- DCM-007: Perfil de usuario y gestión de cuenta
+#### DCM-003: Implementación del modelo de datos inicial
+**Tipo**: Tarea Técnica  
+**Prioridad**: Alta  
+**Estimación**: 8 puntos  
+**Descripción**: Implementar el esquema de base de datos inicial con las entidades principales requeridas para el MVP.  
+**Criterios de aceptación**:
+- Esquemas de PostgreSQL para entidades principales
+- Migraciones de base de datos
+- Scripts de inicialización para datos de prueba
+- Configuración de ORM
 
-#### Épica 3: Módulo de Análisis Cultural (NLP)
-- DCM-008: Servicio de procesamiento NLP con OpenAI GPT
-- DCM-009: Preprocesamiento de documentos culturales
-- DCM-010: Motor de reglas para post-procesamiento
-- DCM-011: Interfaz de administrador para gestión cultural
+### Épica 2: Autenticación y Gestión de Usuarios
 
-#### Épica 4: Evaluación de Perfiles Técnicos
-- DCM-012: Implementación de autodiagnóstico para desarrolladores
-- DCM-013: Calibración de nivel técnico
-- DCM-014: Implementación del mapa de carrera básico
+#### DCM-005: Implementación de autenticación con Google OAuth
+**Tipo**: Historia de Usuario  
+**Prioridad**: Alta  
+**Estimación**: 8 puntos  
+**Descripción**: Como usuario, quiero poder iniciar sesión con mi cuenta de Google para acceder a la plataforma de manera segura y sin tener que crear credenciales adicionales.  
+**Criterios de aceptación**:
+- Flujo completo de login con Google OAuth 2.0
+- Redirección a callback y procesamiento de tokens
+- Generación y validación de JWT
+- Manejo de sesiones
+- UI para botón de login con Google
 
-#### Épica 5: Motor de Alineación y Plan de Desarrollo
-- DCM-015: Implementación del motor de alineación cultural-técnica
-- DCM-016: Dashboard de alineación para desarrolladores
-- DCM-017: Generación de plan de desarrollo personalizado
+#### DCM-006: Implementación de roles de usuario (Admin/Developer)
+**Tipo**: Historia de Usuario  
+**Prioridad**: Alta  
+**Estimación**: 5 puntos  
+**Descripción**: Como sistema, necesito distinguir entre usuarios administradores y desarrolladores para proporcionar acceso diferenciado a las funcionalidades.  
+**Criterios de aceptación**:
+- Detección automática de rol basado en dominio de correo y primer usuario
+- Middleware de autorización basado en roles
+- Limitación de acceso a endpoints según rol
+- Interfaz de usuario adaptada al rol del usuario
 
-#### Épica 6: API y Routing
-- DCM-018: Implementación de estructura de API básica
-- DCM-019: Implementación de endpoints para gestión cultural
-- DCM-020: Implementación de endpoints para perfiles y evaluación
-- DCM-021: Implementación de endpoints para alineación y planes
+### Épica 3: Módulo de Análisis Cultural (NLP)
 
-#### Épica 7: Frontend y Experiencia de Usuario
-- DCM-022: Implementación de componentes compartidos
-- DCM-023: Implementación de vistas de administrador
-- DCM-024: Implementación de vistas de desarrollador
-- DCM-025: Visualizaciones de datos con Recharts
+#### DCM-008: Servicio de procesamiento NLP con OpenAI GPT
+**Tipo**: Tarea Técnica  
+**Prioridad**: Alta  
+**Estimación**: 13 puntos  
+**Descripción**: Implementar el servicio de NLP para el análisis de documentos culturales utilizando OpenAI GPT API.  
+**Criterios de aceptación**:
+- Cliente para comunicación con OpenAI API
+- Implementación de prompts optimizados para extracción de valores y comportamientos
+- Manejo de reintentos y errores
+- Control de costos y límites de tokens
+- Pruebas unitarias con casos de texto real
 
-#### Épica 8: Integración y Pruebas
-- DCM-026: Integración de componentes front-end y back-end
-- DCM-027: Pruebas del flujo principal
-- DCM-028: Despliegue de MVP en ambiente de producción
+#### DCM-009: Preprocesamiento de documentos culturales
+**Tipo**: Tarea Técnica  
+**Prioridad**: Alta  
+**Estimación**: 8 puntos  
+**Descripción**: Implementar la capa de preprocesamiento para documentos culturales en diferentes formatos.  
+**Criterios de aceptación**:
+- Extracción de texto de documentos PDF, DOCX y HTML
+- Limpieza y normalización de texto
+- Segmentación para procesamiento modular
+- Detección de idioma
 
-### **6.2. Planificación de Sprints**
+### Épica 7: Frontend y UX
+
+#### DCM-022: Implementación de componentes compartidos
+**Tipo**: Tarea Técnica  
+**Prioridad**: Alta  
+**Estimación**: 5 puntos  
+**Descripción**: Desarrollar los componentes compartidos de UI que se utilizarán en toda la aplicación.  
+**Criterios de aceptación**:
+- Navbar y sidebar responsivos
+- Componentes de formulario reutilizables
+- Componentes de visualización de datos
+- Tema y estilos unificados
+
+#### DCM-023: Implementación de vistas de administrador
+**Tipo**: Historia de Usuario  
+**Prioridad**: Alta  
+**Estimación**: 8 puntos  
+**Descripción**: Como administrador, quiero acceder a un dashboard que me permita gestionar el perfil cultural y usuarios de mi organización.  
+**Criterios de aceptación**:
+- Dashboard principal con métricas
+- Vista de gestión cultural
+- Vista de gestión de usuarios
+- Editor de mapa de carrera organizacional
+
+### Planificación de Sprints
 
 ```mermaid
 gantt
     title Plan de Implementación DevCompass MVP
     dateFormat  YYYY-MM-DD
     section Sprint 0
-    Configuración del repositorio                  :a1, 2025-06-01, 1w
-    Configuración de entorno dev                   :a2, 2025-06-01, 1w
-    Implementación modelo de datos                 :a3, 2025-06-08, 1w
+    Configuración inicial                          :a1, 2025-06-01, 2w
     
     section Sprint 1
-    Configuración de despliegue                    :b1, 2025-06-15, 1w
-    Autenticación con Google                       :b2, 2025-06-15, 2w
-    Implementación de roles                        :b3, 2025-06-22, 1w
-    Estructura API básica                          :b4, 2025-06-22, 1w
+    Autenticación y API Base                       :b1, 2025-06-15, 2w
     
     section Sprint 2
-    Perfil y gestión de usuario                    :c1, 2025-06-29, 1w
-    Endpoints gestión cultural                     :c2, 2025-06-29, 1w
-    Endpoints perfiles                             :c3, 2025-07-06, 1w
-    Componentes compartidos                        :c4, 2025-07-06, 1w
+    Perfiles y Frontend Base                       :c1, 2025-06-29, 2w
     
     section Sprint 3
-    Servicio NLP con OpenAI                        :d1, 2025-07-13, 2w
-    Preprocesamiento documentos                    :d2, 2025-07-13, 1w
-    Motor de reglas                                :d3, 2025-07-20, 1w
+    Procesamiento NLP                              :d1, 2025-07-13, 2w
     
     section Sprint 4
-    Interfaz gestión cultural                      :e1, 2025-07-27, 2w
-    Vistas de administrador                        :e2, 2025-07-27, 2w
-    Visualizaciones (parte 1)                      :e3, 2025-08-03, 1w
+    Interfaz de Administrador                      :e1, 2025-07-27, 2w
     
     section Sprint 5
-    Autodiagnóstico desarrolladores                :f1, 2025-08-10, 2w
-    Calibración nivel técnico                      :f2, 2025-08-10, 1w
-    Mapa de carrera básico                         :f3, 2025-08-17, 1w
+    Perfiles de Desarrollador                      :f1, 2025-08-10, 2w
     
     section Sprint 6
-    Motor de alineación                            :g1, 2025-08-24, 2w
-    Dashboard de alineación                        :g2, 2025-08-24, 1w
-    Endpoints alineación y planes                  :g3, 2025-08-31, 1w
-    Vistas de desarrollador                        :g4, 2025-08-31, 1w
+    Alineación y Vistas                            :g1, 2025-08-24, 2w
     
     section Sprint 7
-    Plan de desarrollo personalizado               :h1, 2025-09-07, 1w
-    Visualizaciones (parte 2)                      :h2, 2025-09-07, 1w
-    Integración de componentes                     :h3, 2025-09-14, 1w
-    Pruebas y despliegue                           :h4, 2025-09-14, 1w
+    Finalización MVP                               :h1, 2025-09-07, 2w
 ```
 
-### **6.3. Resumen del Plan**
+### Resumen del Plan
 
 - **Total de tickets**: 28
 - **Puntos de historia totales**: 175
 - **Duración estimada**: 14 semanas (7 sprints de 2 semanas + Sprint 0)
 - **Equipo recomendado**: 5 personas (1 Tech Lead, 2 Desarrolladores Full Stack, 1 Especialista NLP, 1 UX/UI Designer)
 
-### **6.4. Detalles de Distribución Sprint por Sprint**
-
-#### Sprint 0: Preparación (2 semanas)
-- DCM-001: Configuración del repositorio y estructura de proyecto
-- DCM-002: Configuración de entorno de desarrollo simple
-- DCM-003: Implementación del modelo de datos inicial
-
-#### Sprint 1: Autenticación y API Base (2 semanas)
-- DCM-004: Configuración de despliegue simple
-- DCM-005: Implementación de autenticación con Google OAuth
-- DCM-006: Implementación de roles de usuario
-- DCM-018: Implementación de estructura de API básica
-
-#### Sprint 2: Perfiles y Frontend Base (2 semanas)
-- DCM-007: Perfil de usuario y gestión de cuenta
-- DCM-019: Implementación de endpoints para gestión cultural
-- DCM-020: Implementación de endpoints para perfiles y evaluación
-- DCM-022: Implementación de componentes compartidos
-
-#### Sprint 3: Procesamiento NLP (2 semanas)
-- DCM-008: Servicio de procesamiento NLP con OpenAI GPT
-- DCM-009: Preprocesamiento de documentos culturales
-- DCM-010: Motor de reglas para post-procesamiento
-
-#### Sprint 4: Interfaz de Administrador (2 semanas)
-- DCM-011: Interfaz de administrador para gestión cultural
-- DCM-023: Implementación de vistas de administrador
-- DCM-025: Visualizaciones de datos (parte 1)
-
-#### Sprint 5: Perfiles de Desarrollador (2 semanas)
-- DCM-012: Implementación de autodiagnóstico
-- DCM-013: Calibración de nivel técnico
-- DCM-014: Implementación del mapa de carrera básico
-
-#### Sprint 6: Alineación y Plan (2 semanas)
-- DCM-015: Implementación del motor de alineación
-- DCM-016: Dashboard de alineación
-- DCM-021: Implementación de endpoints para alineación y planes
-- DCM-024: Implementación de vistas de desarrollador
-
-#### Sprint 7: Finalización MVP (2 semanas)
-- DCM-017: Generación de plan de desarrollo personalizado
-- DCM-025: Visualizaciones de datos (parte 2)
-- DCM-026: Integración de componentes
-- DCM-027: Pruebas del flujo principal
-- DCM-028: Despliegue de MVP en producción
-
----
-
-## 7. Consideraciones Futuras
-
-### **7.1. Evolución Post-MVP**
+### Consideraciones Futuras
 
 Después de validar el MVP con usuarios reales, se puede considerar la evolución hacia una arquitectura más robusta y escalable:
 
@@ -655,34 +851,8 @@ Después de validar el MVP con usuarios reales, se puede considerar la evolució
    - Implementación de ML para mejora continua
    - Procesamiento batch para análisis masivo
 
-### **7.2. Integraciones Futuras**
-
-```mermaid
-flowchart LR
-    DevCompass[DevCompass] --> HR[HR Systems]
-    DevCompass --> LMS[Learning Platforms]
-    DevCompass --> PM[Project Management]
-    DevCompass --> Git[Git Platforms]
-    
-    HR --> HRIS[HRIS Systems]
-    HR --> ATS[Applicant Tracking]
-    
-    LMS --> Udemy[Udemy]
-    LMS --> Coursera[Coursera]
-    LMS --> LinkedIn[LinkedIn Learning]
-    
-    PM --> Jira[Jira]
-    PM --> Asana[Asana]
-    PM --> Monday[Monday.com]
-    
-    Git --> GitHub[GitHub]
-    Git --> GitLab[GitLab]
-```
-
-Las integraciones se priorizarán según el feedback de usuarios y la dirección que tome el producto después de la validación del MVP.
-
 ---
 
-## 8. Pull requests
+## 7. Pull requests
 
 Work in Progress
